@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2017-2021 The Linux Foundation. All rights reserved.
+ * Copyright (c) 2022 Qualcomm Innovation Center, Inc. All rights reserved.
  *
  * Permission to use, copy, modify, and/or distribute this software for
  * any purpose with or without fee is hereby granted, provided that the
@@ -736,6 +737,11 @@ util_scan_populate_bcn_ie_list(struct scan_cache_entry *scan_params)
 			if (ie->ie_len < WLAN_FILS_INDICATION_IE_MIN_LEN)
 				goto err;
 			scan_params->ie_list.fils_indication = (uint8_t *)ie;
+			break;
+		case WLAN_ELEMID_RSNXE:
+			if (!ie->ie_len)
+				goto err;
+			scan_params->ie_list.rsnxe = (uint8_t *)ie;
 			break;
 		case WLAN_ELEMID_EXTN_ELEM:
 			status = util_scan_parse_extn_ie(scan_params, ie);
