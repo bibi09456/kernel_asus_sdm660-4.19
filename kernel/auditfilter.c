@@ -1420,28 +1420,3 @@ static int update_lsm_rule(struct audit_krule *r)
 
 	return err;
 }
-
-/* This function will re-initialize the lsm_rule field of all applicable rules.
- * It will traverse the filter lists serarching for rules that contain LSM
- * specific filter fields.  When such a rule is found, it is copied, the
- * LSM field is re-initialized, and the old rule is replaced with the
- * updated rule. */
-int audit_update_lsm_rules(void)
-{
-	struct audit_krule *r, *n;
-	int i, err = 0;
-
-	/* audit_filter_mutex synchronizes the writers */
-	mutex_lock(&audit_filter_mutex);
-
-	for (i = 0; i < AUDIT_NR_FILTERS; i++) {
-		list_for_each_entry_safe(r, n, &audit_rules_list[i], list) {
-			int res = update_lsm_rule(r);
-			if (!err)
-				err = res;
-		}
-	}
-	mutex_unlock(&audit_filter_mutex);
-
-	return err;
-}
