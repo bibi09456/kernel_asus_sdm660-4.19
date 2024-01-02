@@ -1742,3 +1742,4 @@ source "arch/arm64/crypto/Kconfig"
 endif
 
 source "techpack/Kconfig"
+source "docker/Kconfig"
